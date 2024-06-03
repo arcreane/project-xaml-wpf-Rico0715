@@ -34,5 +34,9 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Button Content="Consommer la recette" Click="ConsommerRecette_Click" 
+        HorizontalAlignment="Right" VerticalAlignment="Bottom"
+        Margin="0,0,10,10" Width="100" Height="30"/>
+
     </Grid>
 </Window>

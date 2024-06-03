@@ -80,6 +80,9 @@
     <Compile Include="DetailsRecette.xaml.cs">
       <DependentUpon>DetailsRecette.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Historique.xaml.cs">
+      <DependentUpon>Historique.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ingredient.cs" />
     <Compile Include="MesRecettes.xaml.cs">
       <DependentUpon>MesRecettes.xaml</DependentUpon>
@@ -96,6 +99,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DetailsRecette.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Historique.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

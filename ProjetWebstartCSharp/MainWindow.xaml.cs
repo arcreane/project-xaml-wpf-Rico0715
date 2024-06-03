@@ -58,5 +58,12 @@ namespace ProjetWebstartCSharp
         {
 
         }
+
+        private void ViewHistorique(object sender, RoutedEventArgs e)
+        {
+            Historique historiqueWindow = new Historique();
+
+            historiqueWindow.Show();
+        }
     }
 }

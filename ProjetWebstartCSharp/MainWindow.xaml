@@ -10,5 +10,6 @@
         <Button Content="Nouvelle Recette" HorizontalAlignment="Left" Margin="99,181,0,0" VerticalAlignment="Top" Height="62" Width="142" Click="SaisieNewRecette"/>
         <Button Content="Mes Recettes" HorizontalAlignment="Left" Margin="610,181,0,0" VerticalAlignment="Top" Height="62" Width="142" Click="ViewMesRecettes"/>
         <Button Content="Stock" HorizontalAlignment="Left" Margin="342,181,0,0" VerticalAlignment="Top" Height="62" Width="142" Click="ViewStock"/>
+        <!--<Button Content="Historique" HorizontalAlignment="Left" Margin="99,320,0,0" VerticalAlignment="Top" Height="62" Width="142" Click="ViewHistorique"/>-->
     </Grid>
 </Window>

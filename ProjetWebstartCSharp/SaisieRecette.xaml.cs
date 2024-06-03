@@ -59,23 +59,7 @@ namespace ProjetWebstartCSharp
             }
         }
 
-        private void TextBox_Search_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string searchText = textBoxSearch.Text.Trim().ToLower();
-
-           
-            for (int i = 0; i < listBoxIngredients.Items.Count; i++)
-            {
-                var ingredient = listBoxIngredients.Items[i] as Ingredient;
-                if (ingredient != null && ingredient.NomIngredient.ToLower().Contains(searchText))
-                {
-                    // Sélection de l'élément correspondant
-                    listBoxIngredients.SelectedItem = ingredient;
-                    listBoxIngredients.ScrollIntoView(ingredient); 
-                    break; 
-                }
-            }
-        }
+        
 
         private void ButtonEnregistrer_Click(object sender, RoutedEventArgs e)
         {
@@ -108,6 +92,8 @@ namespace ProjetWebstartCSharp
                             insertIngredientCommand.ExecuteNonQuery();
                         }
                     }
+                    MettreAJourStock(recetteId);
+
 
                     MessageBox.Show("Recette enregistrée avec succès !");
                 }
@@ -115,6 +101,36 @@ namespace ProjetWebstartCSharp
             catch (Exception ex)
             {
                 MessageBox.Show("Erreur lors de l'enregistrement de la recette : " + ex.Message);
+            }
+        }
+
+
+        private void MettreAJourStock(int recetteId)
+        {
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["MaConnexion"].ConnectionString;
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string updateStockQuery = @"
+                        UPDATE I
+SET I.Quantite = I.Quantite - RI.Quantite
+FROM Ingredients AS I
+JOIN RecetteIngredients AS RI ON I.Id = RI.IngredientId
+WHERE RI.RecetteId = @RecetteId;";
+
+                    SqlCommand updateStockCommand = new SqlCommand(updateStockQuery, connection);
+                    updateStockCommand.Parameters.AddWithValue("@RecetteId", recetteId);
+
+                    updateStockCommand.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur lors de la mise à jour du stock : " + ex.Message);
             }
         }
 
@@ -146,6 +162,24 @@ namespace ProjetWebstartCSharp
             textBox.TextChanged += textBoxDescription_TextChanged;
         }
 
+
+private void TextBox_Search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = textBoxSearch.Text.Trim().ToLower();
+
+           
+            for (int i = 0; i < listBoxIngredients.Items.Count; i++)
+            {
+                var ingredient = listBoxIngredients.Items[i] as Ingredient;
+                if (ingredient != null && ingredient.NomIngredient.ToLower().Contains(searchText))
+                {
+                    // Sélection de l'élément correspondant
+                    listBoxIngredients.SelectedItem = ingredient;
+                    listBoxIngredients.ScrollIntoView(ingredient); 
+                    break; 
+                }
+            }
+        }
         private void textBoxTempsPreparation_TextChanged(object sender, TextChangedEventArgs e)
         {
 

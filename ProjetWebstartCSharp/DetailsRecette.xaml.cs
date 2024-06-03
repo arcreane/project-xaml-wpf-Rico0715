@@ -18,9 +18,13 @@ namespace ProjetWebstartCSharp
 {
     public partial class DetailsRecette : Window
     {
+        private int _recetteId;
+
         public DetailsRecette(Recette recette)
         {
             InitializeComponent();
+            _recetteId = recette.Id; // Stocke l'ID de la recette actuelle
+
             AfficherDetailsRecette(recette);
         }
 
@@ -85,5 +89,47 @@ namespace ProjetWebstartCSharp
             return prixTotal;
         }
 
+        private void MettreAJourStock(int recetteId)
+        {
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["MaConnexion"].ConnectionString;
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string updateStockQuery = @"
+                        UPDATE I
+SET I.Quantite = I.Quantite - RI.Quantite
+FROM Ingredients AS I
+JOIN RecetteIngredients AS RI ON I.Id = RI.IngredientId
+WHERE RI.RecetteId = @RecetteId;";
+
+                    SqlCommand updateStockCommand = new SqlCommand(updateStockQuery, connection);
+                    updateStockCommand.Parameters.AddWithValue("@RecetteId", recetteId);
+
+                    updateStockCommand.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur lors de la mise à jour du stock : " + ex.Message);
+            }
+        }
+
+        private void ConsommerRecette_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Utilisez l'ID de la recette stockée pour mettre à jour le stock
+                MettreAJourStock(_recetteId);
+                MessageBox.Show("Stock mis à jour avec succès !");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur lors de la consommation de la recette : " + ex.Message);
+            }
+        }
     }
 }
